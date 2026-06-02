@@ -1,6 +1,7 @@
 import { GitHubIcon, LinkedInIcon, EmailIcon } from "../components/icons";
 import { useCopyEmail } from "../components/CopyToastProvider";
 import { site } from "../data/content";
+import { asset } from "../utils/asset";
 
 export default function Hero() {
   const copyEmail = useCopyEmail();
@@ -23,7 +24,7 @@ export default function Hero() {
             </a>
             <a
               className="btn btn-ghost"
-              href={site.resumeUrl}
+              href={asset(site.resumeUrl)}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -62,7 +63,7 @@ export default function Hero() {
           <div className="hero-photo-wrap">
             <img
               className="hero-photo"
-              src={site.photoUrl}
+              src={asset(site.photoUrl)}
               alt={site.photoAlt}
               width={380}
               height={380}

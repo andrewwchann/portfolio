@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { AboutPhoto } from "../data/types";
+import { asset } from "../utils/asset";
 
 type AboutCarouselProps = {
   photos: AboutPhoto[];
@@ -93,7 +94,7 @@ export default function AboutCarousel({ photos }: AboutCarouselProps) {
             <img
               key={photo.src}
               className={`about-carousel__image${i === index ? " is-active" : ""}`}
-              src={photo.src}
+              src={asset(photo.src)}
               alt={i === index ? photo.alt : ""}
               aria-hidden={i !== index}
               width={520}

@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import type { Project } from "../data/types";
 import ContentBlocks from "./ContentBlocks";
 import { GitHubIcon, ExternalLinkIcon } from "./icons";
+import { asset } from "../utils/asset";
 
 type ProjectModalProps = {
   project: Project | null;
@@ -229,7 +230,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               </div>
             ) : videoUrl && isLocalVideo ? (
               <div className="project-modal__video-wrap">
-                <video controls playsInline preload="metadata" src={videoUrl}>
+                <video controls playsInline preload="metadata" src={asset(videoUrl)}>
                   <track kind="captions" />
                 </video>
               </div>
@@ -243,7 +244,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               <h3 className="project-modal__section-title">Architecture</h3>
               {architectureSrc ? (
                 <DiagramFigure
-                  src={architectureSrc}
+                  src={asset(architectureSrc)}
                   alt={
                     detail?.architectureCaption ??
                     `${project.title} architecture diagram`
@@ -260,7 +261,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               <h3 className="project-modal__section-title">Flow</h3>
               {flowSrc ? (
                 <DiagramFigure
-                  src={flowSrc}
+                  src={asset(flowSrc)}
                   alt={detail?.flowCaption ?? `${project.title} flow diagram`}
                   caption={detail?.flowCaption}
                   onExpand={setExpandedDiagram}
