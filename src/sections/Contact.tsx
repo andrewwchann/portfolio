@@ -14,8 +14,7 @@ export default function Contact() {
           <span className="section-label mono">04</span>
           <h2 id="contact-heading">Get in touch</h2>
           <p className="contact-lead">
-            Open to internships, collaborations, and interesting problems. The best way
-            to reach me is email—I usually reply within a day.
+            Open to internships and full-time roles. Shoot me an email or connect with me on LinkedIn if anything piqued your interest.
           </p>
         </header>
         <div className="contact-actions" ref={actionsRef}>

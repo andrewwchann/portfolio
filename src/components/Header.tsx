@@ -4,7 +4,6 @@ const NAV = [
   { href: "#about", label: "About" },
   { href: "#experience", label: "Experience" },
   { href: "#projects", label: "Projects" },
-  { href: "#contact", label: "Contact" },
 ];
 
 export default function Header() {
@@ -66,7 +65,7 @@ export default function Header() {
           ))}
           <li>
             <a className="nav-cta" href="#contact" onClick={closeMenu}>
-              Let&apos;s talk
+              Contact Me!
             </a>
           </li>
         </ul>
