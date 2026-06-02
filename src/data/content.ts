@@ -1,0 +1,153 @@
+export const site = {
+  name: "Andrew",
+  tagline: "Software Engineering New Grad",
+  photoUrl: "/profile.jpg",
+  photoAlt: "Andrew Chan",
+  email: "ajchan@ualberta.ca",
+  github: "https://github.com/andrewwchann",
+  linkedin: "https://www.linkedin.com/in/andrewchann/",
+  resumeUrl: "/resume.pdf",
+  skills: [
+    "Python",
+    "C++",
+    "Java",
+    "Kotlin",
+    "Rust",
+    "Lua",
+    "SQL",
+    "Git",
+    "Linux",
+    "Windows",
+    "CI/CD",
+    "Agile",
+  ],
+  about: [
+    "I'm a developer passionate about solving real problems and building software that is both functional and efficient. I really enjoy working on things that have meaningful impact, whether thats for the people involved or the end user.",
+    {
+      parts: [
+        "As of lately, I've been enjoying the process of learning robotics through building ",
+        { text: "Cyberus", href: "#projects" },
+        ".",
+      ],
+    },
+    "Outside of my developer life, I enjoy rock climbing, golfing, eating good food, and taking the occasional photo :)",
+  ],
+  /** Add images to /public/about/ and list them here (hero uses profile.jpg separately) */
+  aboutPhotos: [
+    { src: "/about/photo-3.jpg", alt: "flowers" },
+    { src: "/about/photo-2.jpg", alt: "cafe" },
+    { src: "/about/photo-1.jpg", alt: "skyline" },
+  ],
+  experience: [
+    {
+      id: "exp-1",
+      from: "2025-05",
+      label: "May - Dec 2025",
+      type: "Internship",
+      role: "Driver Software Developer Intern",
+      org: "Subnet Solutions Inc.",
+      description:
+        "I continued to work with Subnet on their flagship product (PowerSystem Center) to implement/improve upon features, analyze UAT data, and fix bugs.",
+      tags: [
+        "C++",
+        "Python",
+        "Lua",
+        "JS",
+        "WireShark",
+        "SCADA Devices",
+        "Communication Protocols",
+      ],
+    },
+    {
+      id: "exp-2",
+      from: "2024-09",
+      label: "Jan - Aug 2024",
+      type: "Internship",
+      role: "Driver Software Developer Intern",
+      org: "Subnet Solutions Inc.",
+      description:
+        "My first intership where I was able to work on a large codebase and learn from experienced developers what it's like to work in the industry. My main focuses were to improve upon features and fix bugs in the codebase.",
+      tags: [
+        "Java",
+        "Python",
+        "Lua",
+        "JS",
+        "WireShark",
+        "SCADA Devices",
+        "Communication Protocols",
+      ],
+    },
+  ],
+  projects: [
+    {
+      id: "proj-1",
+      title: "Cyberus Robotic Dog",
+      description: "Designed and built a robotic dog from hardware to software.",
+      github: "https://github.com/yourusername/project-one",
+      // demo: "https://your-demo-link.com",
+      tags: ["Robotics", "Python", "OpenCV", "PWM motor control", "IMU", "Temperature", "Gait"],
+      detail: {
+        overview: [
+          "Cyberus is a robotic dog where I developed the software stack controlling its hardware components, implementing a Master-Slave architecture for communication between a local client and a Jetson Orin Nano",
+          "The goal of the project was to evaluate the quality of an onboard stereo camera by having the dog walk while recording temperature, IMU, and leg gait data. We then ran camera calibration and MTF experiments to assess image fidelity.",
+          "I was responsible for the following:",
+        ],
+        highlights: [
+          "Developing the controls software for the robotic dog",
+          "Integrating and processing the stereo camera streams",
+          "Retrieving sensor data from the hardware including IMU, temperature, and gait data",
+          "Running camera calibration and MTF experiments",
+          "Assisting with hardware and wiring placement within the dog body",
+        ],
+        videoUrl: "/projects/dog_walk.mp4",
+        architectureSrc: "/projects/cyberus-architecture-diagram.png",
+        flowSrc: "",
+      },
+    },
+    {
+      id: "proj-2",
+      title: "Automated License Plate Recognition System",
+      description:
+        "An offline-first system that recognizes license plates using OCR and on-device ML.",
+      github: "https://github.com/andrewwchann/Automated-License-Plate-Recognition-System",
+      tags: ["Kotlin", "OCR", "Computer Vision", "ONNX", "Fast Plate OCR"],
+      detail: {
+        overview: [
+          "This was my capstone project that was sponsored by Dr Nazarahari. The process of building this project was done through spec-driven development using SpecKit and Codex.",
+          "The goal of the project was to create an offline-first system that recognizes license plates using OCR and on-device ML for parking enforcement at the UofA. During the design phase we decided to create a android app for the operators that is connected to a central db hosted in AWS. The violation data could then be reviewed by admins through a web portal.",
+          "I was responsible for the following:",
+        ],
+        highlights: [
+          "Developing the android app for the operators",
+          "Implementing the OCR and on-device ML model pipeline for frame analysis",
+          "Developing the communication between the android app and the central db",
+          "Ensuring operator session data persistence across app restarts",
+        ],
+        videoUrl: "/projects/alpr_demo.mp4",
+        architectureSrc: "/projects/alpr-architecture-diagram.png",
+        flowSrc: "",
+      },
+    },
+    {
+      id: "proj-3",
+      title: "Rust Poker Server",
+      description:
+        "A multiplayer poker server in Rust with Texas Hold'em, 5-Card Draw, and 7-Card Stud.",
+      github: "https://github.com/andrewwchann/rust-poker-server",
+      // demo: "https://your-demo-link.com",
+      tags: ["Rust", "Multiplayer", "WebSockets", "Tokio"],
+      detail: {
+        overview: ["A multiplayer poker server in Rust with Texas Hold'em, 5-Card Draw, and 7-Card Stud. The server is designed to be used in a web browser and is built using the Tokio framework."],
+        highlights: [
+          "Designing the server architecture to handle multiple clients and poker varients",
+          "Implementing the game state machines for each poker varient",
+          "Implementing a SQLite database for storing user data",
+          "Implementing web socket communication for client-server interactions",
+        ],
+        videoUrl: "",
+        architectureSrc: "",
+        flowSrc: "",
+      },
+    },
+  ],
+};
