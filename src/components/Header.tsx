@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { asset } from "../utils/asset";
 
 const NAV = [
   { href: "#about", label: "About" },
@@ -37,7 +38,13 @@ export default function Header() {
     <header className={`site-header${scrolled ? " scrolled" : ""}`} id="top">
       <nav className="nav container" aria-label="Main">
         <a className="logo" href="#top" aria-label="Home">
-          <span className="logo-bracket">&lt;</span>Andrew Chan<span className="logo-bracket">/&gt;</span>
+          <img
+            className="logo-signature"
+            src={asset("/signature.gif")}
+            alt="Andrew Chan"
+            width={271}
+            height={109}
+          />
         </a>
         <button
           className="nav-toggle"

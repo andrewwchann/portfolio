@@ -258,7 +258,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             </section>
 
             <section className="project-modal__section">
-              <h3 className="project-modal__section-title">Flow</h3>
+              <h3 className="project-modal__section-title">Design Decision Matrices</h3>
               {flowSrc ? (
                 <DiagramFigure
                   src={asset(flowSrc)}
@@ -270,6 +270,18 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 <MediaPlaceholder label="Flow or process diagram" />
               )}
             </section>
+
+            {(detail?.images ?? []).map((image) => (
+              <section className="project-modal__section" key={image.src}>
+                <h3 className="project-modal__section-title">{image.label}</h3>
+                <DiagramFigure
+                  src={asset(image.src)}
+                  alt={image.caption ?? `${project.title} ${image.label}`}
+                  caption={image.caption}
+                  onExpand={setExpandedDiagram}
+                />
+              </section>
+            ))}
           </div>
         </div>
       </div>

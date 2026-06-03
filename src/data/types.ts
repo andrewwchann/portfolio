@@ -18,6 +18,13 @@ export type AboutInlineLink = InlineLink;
 /** @deprecated Use ContentBlock */
 export type AboutBlock = ContentBlock;
 
+/** An extra labeled, click-to-expand image (e.g. test results) */
+export type ProjectImage = {
+  src: string;
+  label: string;
+  caption?: string;
+};
+
 export type ProjectDetail = {
   /** Extended write-up — each string becomes its own paragraph */
   overview?: ContentBlock[];
@@ -31,6 +38,8 @@ export type ProjectDetail = {
   /** Flow / process diagram */
   flowSrc?: string;
   flowCaption?: string;
+  /** Additional labeled images (test results, screenshots, etc.) */
+  images?: ProjectImage[];
 };
 
 export type Project = {

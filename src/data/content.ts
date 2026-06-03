@@ -101,7 +101,10 @@ export const site = {
         ],
         videoUrl: "/projects/dog_walk.mp4",
         architectureSrc: "/projects/cyberus-architecture-diagram.png",
-        flowSrc: "",
+        flowSrc: "/projects/decision-matrices.jpg",
+        images: [
+          { src: "/projects/test-results.jpg", label: "Test Results" },
+        ],
       },
     },
     {
@@ -125,7 +128,7 @@ export const site = {
         ],
         videoUrl: "/projects/alpr_demo.mp4",
         architectureSrc: "/projects/alpr-architecture-diagram.png",
-        flowSrc: "",
+        flowSrc: "/projects/ALPR-decision-matrices.jpg",
       },
     },
     {

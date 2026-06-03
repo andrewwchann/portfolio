@@ -124,10 +124,18 @@ a:hover {
 }
 
 .logo {
+  display: inline-flex;
+  align-items: center;
   font-family: var(--font-mono);
   font-size: 1.125rem;
   font-weight: 500;
   color: var(--text);
+}
+
+.logo-signature {
+  display: block;
+  width: auto;
+  height: 46px;
 }
 
 .logo-bracket {
@@ -1096,24 +1104,24 @@ a:hover {
   position: fixed;
   inset: 0;
   z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 4rem 1.5rem 3rem;
   background: rgba(28, 25, 23, 0.82);
   animation: modal-fade-in 0.2s ease;
 }
 
 .project-modal__lightbox-close {
-  position: absolute;
+  position: fixed;
   top: 1rem;
   right: 1rem;
+  z-index: 1;
   width: 2.5rem;
   height: 2.5rem;
   padding: 0;
   border: 1px solid rgba(255, 254, 247, 0.25);
   border-radius: 8px;
-  background: rgba(255, 254, 247, 0.12);
+  background: rgba(28, 25, 23, 0.6);
   color: #fffbeb;
   font-size: 1.5rem;
   line-height: 1;
@@ -1122,14 +1130,13 @@ a:hover {
 }
 
 .project-modal__lightbox-close:hover {
-  background: rgba(255, 254, 247, 0.2);
+  background: rgba(28, 25, 23, 0.85);
   border-color: rgba(255, 254, 247, 0.45);
 }
 
 .project-modal__lightbox-figure {
-  margin: 0;
+  margin: 0 auto;
   max-width: min(1200px, 100%);
-  max-height: calc(100vh - 3rem);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1137,11 +1144,8 @@ a:hover {
 
 .project-modal__lightbox-figure img {
   display: block;
-  max-width: 100%;
-  max-height: calc(100vh - 5rem);
-  width: auto;
+  width: 100%;
   height: auto;
-  object-fit: contain;
   border-radius: var(--radius);
   border: 1px solid rgba(255, 254, 247, 0.2);
   background: var(--bg-card);
