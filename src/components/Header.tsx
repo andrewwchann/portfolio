@@ -83,7 +83,7 @@ export default function Header() {
           ))}
           <li>
             <a className="nav-cta" href="#contact" onClick={closeMenu}>
-              Contact Me!
+              Say Hi!
             </a>
           </li>
         </ul>
