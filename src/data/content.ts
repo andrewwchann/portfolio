@@ -149,7 +149,6 @@ export const site = {
         ],
         videoUrl: "/projects/poker-demo.mp4",
         architectureSrc: "/projects/rust-poker-architecture.jpg",
-        flowSrc: "",
       },
     },
   ],

@@ -257,19 +257,17 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               )}
             </section>
 
-            <section className="project-modal__section">
-              <h3 className="project-modal__section-title">Design Decision Matrices</h3>
-              {flowSrc ? (
+            {flowSrc ? (
+              <section className="project-modal__section">
+                <h3 className="project-modal__section-title">Design Decision Matrices</h3>
                 <DiagramFigure
                   src={asset(flowSrc)}
                   alt={detail?.flowCaption ?? `${project.title} flow diagram`}
                   caption={detail?.flowCaption}
                   onExpand={setExpandedDiagram}
                 />
-              ) : (
-                <MediaPlaceholder label="Flow or process diagram" />
-              )}
-            </section>
+              </section>
+            ) : null}
 
             {(detail?.images ?? []).map((image) => (
               <section className="project-modal__section" key={image.src}>
