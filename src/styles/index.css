@@ -942,7 +942,7 @@ a:hover {
 }
 
 .project-modal__dialog {
-  width: min(760px, 100%);
+  width: min(920px, 100%);
   margin: auto;
   padding: 1.75rem;
   background: var(--bg-elevated);
@@ -1086,9 +1086,13 @@ a:hover {
 }
 
 .project-modal__diagrams {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.project-modal__diagrams .project-modal__section {
+  margin: 0;
 }
 
 .project-modal__figure {
@@ -1102,14 +1106,13 @@ a:hover {
   padding: 0;
   border: none;
   border-radius: var(--radius);
-  background: transparent;
+  background: #fff;
   cursor: zoom-in;
   overflow: hidden;
-  transition: transform var(--transition), box-shadow var(--transition);
+  transition: box-shadow var(--transition);
 }
 
 .project-modal__figure-btn:hover {
-  transform: translateY(-1px);
   box-shadow: var(--shadow);
 }
 
@@ -1121,22 +1124,25 @@ a:hover {
 .project-modal__figure-btn img {
   display: block;
   width: 100%;
+  height: auto;
+  max-width: 100%;
   border-radius: var(--radius);
   border: 1px solid var(--border);
-  background: var(--bg-card);
+  background: #fff;
 }
 
 .project-modal__figure-hint {
   position: absolute;
-  right: 0.5rem;
-  bottom: 0.5rem;
-  padding: 0.25rem 0.5rem;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  padding: 0.35rem 0.6rem;
   font-size: 0.6875rem;
   color: #fffbeb;
-  background: rgba(28, 25, 23, 0.65);
+  background: rgba(28, 25, 23, 0.55);
   border-radius: 6px;
   opacity: 0;
   transition: opacity var(--transition);
+  pointer-events: none;
 }
 
 .project-modal__figure-btn:hover .project-modal__figure-hint,
@@ -1145,10 +1151,10 @@ a:hover {
 }
 
 .project-modal__figure figcaption {
-  margin-top: 0.5rem;
+  margin-top: 0.65rem;
   font-size: 0.8125rem;
   color: var(--text-dim);
-  text-align: center;
+  text-align: left;
 }
 
 .project-modal__lightbox {

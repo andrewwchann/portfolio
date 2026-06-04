@@ -65,11 +65,11 @@ function DiagramFigure({
         type="button"
         className="project-modal__figure-btn"
         onClick={() => onExpand({ src, alt, caption })}
-        aria-label={`Expand ${alt}`}
+        aria-label={`View ${alt} full size`}
       >
-        <img src={src} alt="" />
+        <img src={src} alt={alt} />
         <span className="project-modal__figure-hint mono" aria-hidden>
-          Click to expand
+          Full size
         </span>
       </button>
       {caption ? <figcaption>{caption}</figcaption> : null}
