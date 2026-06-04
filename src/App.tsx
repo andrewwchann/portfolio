@@ -1,6 +1,5 @@
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import PageBackground from "./components/PageBackground";
 import { CopyToastProvider } from "./components/CopyToastProvider";
 import { site } from "./data/content";
 import Hero from "./sections/Hero";
@@ -13,7 +12,6 @@ export default function App() {
   return (
     <CopyToastProvider email={site.email}>
     <>
-      <PageBackground />
       <div className="page-content">
       <a className="skip-link" href="#main">
         Skip to content

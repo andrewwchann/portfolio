@@ -38,14 +38,7 @@ body {
   font-size: 1.0625rem;
   line-height: 1.65;
   color: var(--text);
-  background: linear-gradient(
-    164deg,
-    #fdfd96 0%,
-    #ffffd1 35%,
-    #ffffff 55%,
-    #ffffd1 75%,
-    #fdfd96 100%
-  );
+  background: var(--bg);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -91,23 +84,36 @@ a:hover {
   top: 1rem;
 }
 
-/* Paper GrainGradient background — CSS fallback always visible under canvas */
+/* Paper GrainGradient background */
 .page-shader {
   position: fixed;
   inset: 0;
   z-index: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
   pointer-events: none;
   overflow: hidden;
-  background:
-    radial-gradient(ellipse 120% 80% at 18% 28%, rgba(255, 255, 255, 0.92) 0%, transparent 55%),
-    radial-gradient(ellipse 100% 70% at 78% 68%, rgba(255, 255, 209, 0.88) 0%, transparent 50%),
-    linear-gradient(164deg, #fdfd96 0%, #ffffd1 35%, #ffffff 55%, #ffffd1 75%, #fdfd96 100%);
+  background: var(--bg);
 }
 
 .page-shader canvas {
   display: block;
   width: 100% !important;
   height: 100% !important;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.page-shader-ready canvas {
+  opacity: 1;
+}
+
+#bg-root {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .page-content {

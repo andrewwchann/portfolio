@@ -1,38 +1,50 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { GrainGradient } from "@paper-design/shaders-react";
-
-const DESKTOP_MAX_PIXELS = 1280 * 720;
-const MOBILE_MAX_PIXELS = 854 * 480;
-
-function getMaxPixelCount() {
-  if (window.matchMedia("(max-width: 768px)").matches) {
-    return MOBILE_MAX_PIXELS;
-  }
-  return DESKTOP_MAX_PIXELS;
-}
+import {
+  createGrainGradientMount,
+  getMaxPixelCount,
+  shaderAssetsReady,
+} from "./shaderBackground";
+import type { ShaderMount } from "@paper-design/shaders";
 
 export default function PageBackground() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [ready, setReady] = useState(false);
-  const [speed, setSpeed] = useState(0.86);
-  const [maxPixelCount, setMaxPixelCount] = useState(getMaxPixelCount);
+  const mountRef = useRef<ShaderMount | null>(null);
+  const speedRef = useRef(0.86);
+  const maxPixelCountRef = useRef(getMaxPixelCount());
+  const [shaderReady, setShaderReady] = useState(false);
 
   useLayoutEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
+    const container = containerRef.current;
+    if (!container) return;
 
-    const markReady = () => {
-      const { width, height } = el.getBoundingClientRect();
-      if (width > 0 && height > 0) {
-        setReady(true);
-        setMaxPixelCount(getMaxPixelCount());
-      }
+    let cancelled = false;
+
+    shaderAssetsReady
+      .then((noiseTexture) => {
+        if (cancelled || !containerRef.current) return;
+
+        mountRef.current?.dispose();
+        mountRef.current = createGrainGradientMount(
+          containerRef.current,
+          speedRef.current,
+          maxPixelCountRef.current,
+          noiseTexture,
+        );
+
+        requestAnimationFrame(() => {
+          if (!cancelled) setShaderReady(true);
+        });
+      })
+      .catch((error) => {
+        console.error("Background shader failed to initialize:", error);
+      });
+
+    return () => {
+      cancelled = true;
+      mountRef.current?.dispose();
+      mountRef.current = null;
+      setShaderReady(false);
     };
-
-    markReady();
-    const observer = new ResizeObserver(markReady);
-    observer.observe(el);
-    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -41,8 +53,13 @@ export default function PageBackground() {
 
     const update = () => {
       const reducedMotion = motion.matches;
-      setSpeed(reducedMotion ? 0 : 0.86);
-      setMaxPixelCount(getMaxPixelCount());
+      const nextSpeed = reducedMotion ? 0 : 0.86;
+      const nextMaxPixels = getMaxPixelCount();
+
+      speedRef.current = nextSpeed;
+      maxPixelCountRef.current = nextMaxPixels;
+      mountRef.current?.setSpeed(nextSpeed);
+      mountRef.current?.setMaxPixelCount(nextMaxPixels);
     };
 
     update();
@@ -56,25 +73,10 @@ export default function PageBackground() {
   }, []);
 
   return (
-    <div ref={containerRef} className="page-shader" aria-hidden>
-      {ready && (
-        <GrainGradient
-          style={{ width: "100%", height: "100%" }}
-          colors={["#fdfd96", "#ffffd1", "#ffffff"]}
-          colorBack="#fdfd96"
-          softness={1}
-          intensity={0}
-          noise={0.12}
-          shape="wave"
-          speed={speed}
-          scale={1.32}
-          rotation={164}
-          offsetX={-0.02}
-          offsetY={0.02}
-          minPixelRatio={1}
-          maxPixelCount={maxPixelCount}
-        />
-      )}
-    </div>
+    <div
+      ref={containerRef}
+      className={`page-shader${shaderReady ? " page-shader-ready" : ""}`}
+      aria-hidden
+    />
   );
 }
