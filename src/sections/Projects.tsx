@@ -1,4 +1,4 @@
-import { useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { useReveal } from "../hooks/useReveal";
 import { site } from "../data/content";
 import type { Project } from "../data/types";
@@ -7,7 +7,22 @@ import { GitHubIcon, ExternalLinkIcon } from "../components/icons";
 
 export default function Projects() {
   const headerRef = useReveal<HTMLElement>();
+  const gridRef = useRef<HTMLDivElement>(null);
+  const [gridInView, setGridInView] = useState(false);
   const [selected, setSelected] = useState<Project | null>(null);
+
+  useEffect(() => {
+    const el = gridRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setGridInView(entry.isIntersecting),
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.15 },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section className="section" id="projects" aria-labelledby="projects-heading">
@@ -19,7 +34,10 @@ export default function Projects() {
             Click a project to explore more details, demos, and architecture/flow diagrams.
           </p>
         </header>
-        <div className="projects-grid">
+        <div
+          ref={gridRef}
+          className={`projects-grid${gridInView ? " projects-grid--float" : ""}`}
+        >
           {site.projects.map((project) => (
             <ProjectCard
               key={project.id}

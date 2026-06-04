@@ -147,7 +147,7 @@ export const site = {
           "Implementing a SQLite database for storing user data",
           "Implementing web socket communication for client-server interactions",
         ],
-        videoUrl: "",
+        videoUrl: "/projects/poker-demo.mp4",
         architectureSrc: "",
         flowSrc: "",
       },

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState, type MouseEvent } from "react";
 import { asset } from "../utils/asset";
 
 const NAV = [
@@ -7,10 +7,17 @@ const NAV = [
   { href: "#projects", label: "Projects" },
 ];
 
+const SIGNATURE_GIF = asset("/signature.gif");
+
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("");
+  const [signatureKey, setSignatureKey] = useState(0);
+
+  useLayoutEffect(() => {
+    setSignatureKey(1);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -34,17 +41,27 @@ export default function Header() {
 
   const closeMenu = () => setMenuOpen(false);
 
+  const scrollToTop = (e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    closeMenu();
+    setSignatureKey((k) => k + 1);
+  };
+
   return (
-    <header className={`site-header${scrolled ? " scrolled" : ""}`} id="top">
+    <header className={`site-header${scrolled ? " scrolled" : ""}`}>
       <nav className="nav container" aria-label="Main">
-        <a className="logo" href="#top" aria-label="Home">
-          <img
-            className="logo-signature"
-            src={asset("/signature.gif")}
-            alt="Andrew Chan"
-            width={271}
-            height={109}
-          />
+        <a className="logo" href="#top" aria-label="Home" onClick={scrollToTop}>
+          {signatureKey > 0 && (
+            <img
+              key={`signature-${signatureKey}`}
+              className="logo-signature"
+              src={`${SIGNATURE_GIF}?v=${signatureKey}`}
+              alt="Andrew Chan"
+              width={335}
+              height={109}
+            />
+          )}
         </a>
         <button
           className="nav-toggle"

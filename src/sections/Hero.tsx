@@ -7,7 +7,7 @@ export default function Hero() {
   const copyEmail = useCopyEmail();
 
   return (
-    <section className="hero" aria-labelledby="hero-heading">
+    <section className="hero" id="top" aria-labelledby="hero-heading">
       <div className="container hero-inner">
         <div className="hero-row">
           <div className="hero-content">
