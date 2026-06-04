@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState, type MouseEvent } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import { asset } from "../utils/asset";
 
 const NAV = [
@@ -13,11 +13,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("");
-  const [signatureKey, setSignatureKey] = useState(0);
-
-  useLayoutEffect(() => {
-    setSignatureKey(1);
-  }, []);
+  const [signaturePlayId, setSignaturePlayId] = useState(() => Date.now());
 
   useEffect(() => {
     const onScroll = () => {
@@ -45,23 +41,21 @@ export default function Header() {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: "smooth" });
     closeMenu();
-    setSignatureKey((k) => k + 1);
+    setSignaturePlayId(Date.now());
   };
 
   return (
     <header className={`site-header${scrolled ? " scrolled" : ""}`}>
       <nav className="nav container" aria-label="Main">
         <a className="logo" href="#top" aria-label="Home" onClick={scrollToTop}>
-          {signatureKey > 0 && (
-            <img
-              key={`signature-${signatureKey}`}
-              className="logo-signature"
-              src={`${SIGNATURE_GIF}?v=${signatureKey}`}
-              alt="Andrew Chan"
-              width={335}
-              height={109}
-            />
-          )}
+          <img
+            key={signaturePlayId}
+            className="logo-signature"
+            src={`${SIGNATURE_GIF}?v=${signaturePlayId}`}
+            alt="Andrew Chan"
+            width={335}
+            height={109}
+          />
         </a>
         <button
           className="nav-toggle"

@@ -148,7 +148,7 @@ export const site = {
           "Implementing web socket communication for client-server interactions",
         ],
         videoUrl: "/projects/poker-demo.mp4",
-        architectureSrc: "",
+        architectureSrc: "/projects/rust-poker-architecture.jpg",
         flowSrc: "",
       },
     },

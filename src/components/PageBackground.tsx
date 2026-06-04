@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { GrainGradient } from "@paper-design/shaders-react";
 
 const DESKTOP_MAX_PIXELS = 1280 * 720;
@@ -12,15 +12,35 @@ function getMaxPixelCount() {
 }
 
 export default function PageBackground() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [ready, setReady] = useState(false);
   const [speed, setSpeed] = useState(0.86);
-  const [maxPixelCount, setMaxPixelCount] = useState(DESKTOP_MAX_PIXELS);
+  const [maxPixelCount, setMaxPixelCount] = useState(getMaxPixelCount);
+
+  useLayoutEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const markReady = () => {
+      const { width, height } = el.getBoundingClientRect();
+      if (width > 0 && height > 0) {
+        setReady(true);
+        setMaxPixelCount(getMaxPixelCount());
+      }
+    };
+
+    markReady();
+    const observer = new ResizeObserver(markReady);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const mobile = window.matchMedia("(max-width: 768px)");
 
     const update = () => {
-      const reducedMotion = motion.matches || document.hidden;
+      const reducedMotion = motion.matches;
       setSpeed(reducedMotion ? 0 : 0.86);
       setMaxPixelCount(getMaxPixelCount());
     };
@@ -28,33 +48,33 @@ export default function PageBackground() {
     update();
     motion.addEventListener("change", update);
     mobile.addEventListener("change", update);
-    document.addEventListener("visibilitychange", update);
 
     return () => {
       motion.removeEventListener("change", update);
       mobile.removeEventListener("change", update);
-      document.removeEventListener("visibilitychange", update);
     };
   }, []);
 
   return (
-    <div className="page-shader" aria-hidden>
-      <GrainGradient
-        style={{ width: "100%", height: "100%" }}
-        colors={["#fdfd96", "#ffffd1", "#ffffff"]}
-        colorBack="#fdfd96"
-        softness={1}
-        intensity={0}
-        noise={0.12}
-        shape="wave"
-        speed={speed}
-        scale={1.32}
-        rotation={164}
-        offsetX={-0.02}
-        offsetY={0.02}
-        minPixelRatio={1}
-        maxPixelCount={maxPixelCount}
-      />
+    <div ref={containerRef} className="page-shader" aria-hidden>
+      {ready && (
+        <GrainGradient
+          style={{ width: "100%", height: "100%" }}
+          colors={["#fdfd96", "#ffffd1", "#ffffff"]}
+          colorBack="#fdfd96"
+          softness={1}
+          intensity={0}
+          noise={0.12}
+          shape="wave"
+          speed={speed}
+          scale={1.32}
+          rotation={164}
+          offsetX={-0.02}
+          offsetY={0.02}
+          minPixelRatio={1}
+          maxPixelCount={maxPixelCount}
+        />
+      )}
     </div>
   );
 }
