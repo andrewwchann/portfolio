@@ -12,6 +12,23 @@ export type InlineLink = {
 /** Plain paragraph or text with inline links */
 export type ContentBlock = string | { parts: Array<string | InlineLink> };
 
+export type Experience = {
+  id: string;
+  from: string;
+  label: string;
+  type: string;
+  role: string;
+  org: string;
+  product?: {
+    name: string;
+    href: string;
+    tagline?: string;
+  };
+  /** Each block becomes its own paragraph */
+  description: ContentBlock[];
+  tags: string[];
+};
+
 /** @deprecated Use ContentBlock */
 export type AboutInlineLink = InlineLink;
 

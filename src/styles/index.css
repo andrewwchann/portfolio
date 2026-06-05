@@ -733,15 +733,57 @@ a:hover {
 }
 
 .timeline-org {
-  margin: 0 0 0.75rem;
+  margin: 0 0 0.35rem;
   color: var(--accent);
   font-weight: 500;
 }
 
+.timeline-product {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.timeline-product a {
+  color: var(--text);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  text-underline-offset: 0.15em;
+}
+
+.timeline-product a:hover {
+  color: var(--accent);
+}
+
+.timeline-product-desc {
+  color: var(--text-muted);
+}
+
 .timeline-desc {
   margin: 0 0 1rem;
-  color: var(--text-muted);
   max-width: 52ch;
+}
+
+.timeline-desc p {
+  margin: 0 0 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.timeline-desc p:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-desc a {
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(234, 179, 8, 0.45);
+  text-underline-offset: 0.15em;
+}
+
+.timeline-desc a:hover {
+  text-decoration-color: var(--accent);
 }
 
 .timeline-tags,

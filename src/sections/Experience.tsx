@@ -1,3 +1,4 @@
+import ContentBlocks from "../components/ContentBlocks";
 import { useReveal } from "../hooks/useReveal";
 import { site } from "../data/content";
 
@@ -29,6 +30,7 @@ function ExperienceItem({
   type,
   role,
   org,
+  product,
   description,
   tags,
 }: ExperienceItemProps) {
@@ -42,7 +44,17 @@ function ExperienceItem({
       </div>
       <h3 className="timeline-role">{role}</h3>
       <p className="timeline-org">{org}</p>
-      <p className="timeline-desc">{description}</p>
+      {product ? (
+        <p className="timeline-product">
+          <a href={product.href} target="_blank" rel="noopener noreferrer">
+            {product.name}
+          </a>
+          {product.tagline ? (
+            <span className="timeline-product-desc"> — {product.tagline}</span>
+          ) : null}
+        </p>
+      ) : null}
+      <ContentBlocks blocks={description} className="timeline-desc" />
       <ul className="timeline-tags">
         {tags.map((tag) => (
           <li key={tag}>{tag}</li>
