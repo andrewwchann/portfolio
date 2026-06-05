@@ -30,7 +30,7 @@ export const site = {
         ".",
       ],
     },
-    "Outside of my developer life, I enjoy rock climbing, golfing, eating good food, and taking the occasional photo :)",
+    "Outside of my developer life, I enjoy rock climbing, golfing, snowboarding, eating good food, and taking the occasional photo :)",
   ],
   /** Add images to /public/about/ and list them here (hero uses profile.jpg separately) */
   aboutPhotos: [
@@ -82,8 +82,8 @@ export const site = {
     {
       id: "proj-1",
       title: "Cyberus Robotic Dog",
-      description: "Designed and built a robotic dog from hardware to software.",
-      github: "https://github.com/yourusername/project-one",
+      description: "Designed and built the software for a robotic dog from hardware to software.",
+      github: "https://github.com/andrewwchann/cyberus-controls",
       // demo: "https://your-demo-link.com",
       tags: ["Robotics", "Python", "OpenCV", "PWM motor control", "IMU", "Temperature", "Gait"],
       detail: {
@@ -100,7 +100,7 @@ export const site = {
           "Assisting with hardware and wiring placement within the dog body",
         ],
         videoUrl: "/projects/cyberus/dog_walk.mp4",
-        architectureSrc: "/projects/cyberus/architecture-diagram.png",
+        architectureSrc: "/projects/cyberus/cyberus-architecture-diagram.png",
         flowSrc: "/projects/cyberus/decision-matrices.jpg",
         images: [
           { src: "/projects/cyberus/test-results.jpg", label: "Test Results" },
