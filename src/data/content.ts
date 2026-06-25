@@ -82,12 +82,14 @@ export const site = {
       title: "Cyberus Robotic Dog",
       description: "Designed and built the software for a robotic dog from hardware to software.",
       github: "https://github.com/andrewwchann/cyberus-controls",
+      hoverArt: "/projects/cyberus/cyberus-pixel-art.png",
       // demo: "https://your-demo-link.com",
       tags: ["Robotics", "Python", "OpenCV", "PWM motor control", "IMU", "Temperature", "Gait"],
       detail: {
         overview: [
           "Cyberus is a robotic dog where I developed the software stack controlling its hardware components, implementing a Master-Slave architecture for communication between a local client and a Jetson Orin Nano",
           "The goal of the project was to evaluate the quality of an onboard stereo camera by having the dog walk while recording temperature, IMU, and leg gait data. We then ran camera calibration and MTF experiments to assess image fidelity.",
+          "From the test results we found that the entry level cameras are ",
           "I was responsible for the following:",
         ],
         highlights: [

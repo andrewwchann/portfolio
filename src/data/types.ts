@@ -66,5 +66,7 @@ export type Project = {
   github: string;
   demo?: string;
   tags: string[];
+  /** Pixel art or illustration that peeks from behind the card on hover */
+  hoverArt?: string;
   detail?: ProjectDetail;
 };

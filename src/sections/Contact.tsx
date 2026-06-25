@@ -12,9 +12,9 @@ export default function Contact() {
       <div className="container">
         <header className="section-header section-header-center" ref={headerRef}>
           <span className="section-label mono">04</span>
-          <h2 id="contact-heading">Get in touch</h2>
+          <h2 id="contact-heading">Lets work together!</h2>
           <p className="contact-lead">
-            Open to internships and full-time roles. Shoot me an email or connect with me on LinkedIn if anything piqued your interest.
+            Shoot me an email or connect with me on LinkedIn if anything piqued your interest.
           </p>
         </header>
         <div className="contact-actions" ref={actionsRef}>
