@@ -22,14 +22,14 @@ export default function Hero() {
             <a className="btn btn-primary" href="#projects">
               View my work
             </a>
-            <a
+            {/* <a
               className="btn btn-ghost"
               href={asset(site.resumeUrl)}
               target="_blank"
               rel="noopener noreferrer"
             >
               Resume
-            </a>
+            </a> */}
           </div>
           <ul className="hero-social" aria-label="Social links">
             <li>
