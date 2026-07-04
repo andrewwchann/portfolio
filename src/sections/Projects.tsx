@@ -29,7 +29,7 @@ export default function Projects() {
     <section className="section" id="projects" aria-labelledby="projects-heading">
       <div className="container">
         <header className="section-header" ref={headerRef}>
-          <span className="section-label mono">03</span>
+          <span className="section-label mono">01</span>
           <h2 id="projects-heading">Projects</h2>
           <p className="projects-lead">
             Click a project to explore more details, demos, and architecture/flow diagrams.
@@ -62,6 +62,8 @@ function ProjectCard({
   onOpen: () => void;
 }) {
   const ref = useReveal<HTMLElement>();
+  const isVideoAsset = /\.(mp4|webm|ogg)$/i.test(project.image ?? "");
+  const usePhoneFrame = project.tileFrame === "phone";
 
   const handleKeyDown = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === "Enter" || e.key === " ") {
@@ -69,6 +71,29 @@ function ProjectCard({
       onOpen();
     }
   };
+
+  const media = project.image ? (
+    isVideoAsset ? (
+      <video
+        className="project-card__image"
+        src={asset(project.image)}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        aria-hidden
+      />
+    ) : (
+      <img
+        className="project-card__image"
+        src={asset(project.image)}
+        alt=""
+        loading="lazy"
+        decoding="async"
+      />
+    )
+  ) : null;
 
   return (
     <div
@@ -89,7 +114,9 @@ function ProjectCard({
         />
       ) : null}
       <article
-        className="project-card project-card--interactive"
+        className={`project-card project-card--interactive${
+          usePhoneFrame ? " project-card--phone" : ""
+        }`}
         ref={ref}
         role="button"
         tabIndex={0}
@@ -97,44 +124,62 @@ function ProjectCard({
         onKeyDown={handleKeyDown}
         aria-label={`Open details for ${project.title}`}
       >
-        <div className="project-card__content">
-          <div className="project-card-top">
-            <span className="project-icon mono" aria-hidden>
+        {project.image ? (
+          <div
+            className={`project-card__media${
+              usePhoneFrame ? " project-card__media--phone" : ""
+            }`}
+          >
+            {usePhoneFrame ? (
+              <div className="project-card__phone" aria-hidden>
+                <div className="project-card__phone-screen">{media}</div>
+              </div>
+            ) : (
+              media
+            )}
+          </div>
+        ) : (
+          <div className="project-card__media project-card__media--empty">
+            <span className="project-card__glyph" aria-hidden>
               ◈
             </span>
-            <div className="project-links">
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${project.title} on GitHub`}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <GitHubIcon size={20} />
-              </a>
-              {project.demo && (
-                <a
-                  href={project.demo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${project.title} live demo`}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <ExternalLinkIcon />
-                </a>
-              )}
-            </div>
           </div>
-          <h3 className="project-title">{project.title}</h3>
-          <p className="project-desc">{project.description}</p>
-          <ul className="project-tags">
-            {project.tags.map((tag) => (
-              <li key={tag}>{tag}</li>
-            ))}
-          </ul>
+        )}
+
+        <div className="project-card__scrim" aria-hidden />
+
+        <span className="project-card__view mono" aria-hidden>
+          View details
+        </span>
+
+        <div className="project-card__links">
+          <a
+            href={project.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${project.title} on GitHub`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <GitHubIcon size={18} />
+          </a>
+          {project.demo && (
+            <a
+              href={project.demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${project.title} live demo`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <ExternalLinkIcon size={18} />
+            </a>
+          )}
         </div>
-        <div className="project-card__hover" aria-hidden>
-          <span className="project-card__hover-text mono">View more details</span>
+
+        <div className="project-card__caption">
+          <h3 className="project-card__name">{project.title}</h3>
+          {project.dates && (
+            <span className="project-card__dates">{project.dates}</span>
+          )}
         </div>
       </article>
     </div>

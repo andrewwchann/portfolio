@@ -82,6 +82,8 @@ export const site = {
       title: "Cyberus Robotic Dog",
       description: "Designed and built the software for a robotic dog from hardware to software.",
       github: "https://github.com/andrewwchann/cyberus-controls",
+      dates: "Apr – Jun 2026",
+      image: "/projects/cyberus/walk_gif.mp4",
       hoverArt: "/projects/cyberus/cyberus-pixel-art.png",
       // demo: "https://your-demo-link.com",
       tags: ["Robotics", "Python", "OpenCV", "PWM motor control", "IMU", "Temperature", "Gait"],
@@ -113,6 +115,9 @@ export const site = {
       description:
         "An offline-first system that recognizes license plates using OCR and on-device ML.",
       github: "https://github.com/andrewwchann/Automated-License-Plate-Recognition-System",
+      dates: "Jan – Apr 2026",
+      image: "/projects/ALPR/alpr_gif.mp4",
+      tileFrame: "phone" as const,
       tags: ["Kotlin", "OCR", "Computer Vision", "ONNX", "Fast Plate OCR"],
       detail: {
         overview: [
@@ -137,6 +142,8 @@ export const site = {
       description:
         "A multiplayer poker server in Rust with Texas Hold'em, 5-Card Draw, and 7-Card Stud.",
       github: "https://github.com/andrewwchann/rust-poker-server",
+      dates: "Mar 2025",
+      image: "/projects/poker/poker-summary.gif",
       // demo: "https://your-demo-link.com",
       tags: ["Rust", "Multiplayer", "WebSockets", "Tokio"],
       detail: {

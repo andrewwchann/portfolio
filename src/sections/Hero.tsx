@@ -11,11 +11,10 @@ export default function Hero() {
       <div className="container hero-inner">
         <div className="hero-row">
           <div className="hero-content">
-          <p className="hero-greeting">
-            <span className="mono">Hey! I&apos;m</span>
-          </p>
+          {/* <p className="hero-greeting">Hey! I&apos;m</p> */}
           <h1 id="hero-heading" className="hero-title">
-            {site.name}
+            {/* {site.name} */}
+            Andrew
           </h1>
           <p className="hero-subtitle">{site.tagline}</p>
           <div className="hero-actions">

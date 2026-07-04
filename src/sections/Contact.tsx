@@ -11,7 +11,7 @@ export default function Contact() {
     <section className="section section-contact" id="contact" aria-labelledby="contact-heading">
       <div className="container">
         <header className="section-header section-header-center" ref={headerRef}>
-          <span className="section-label mono">04</span>
+          <span className="section-label mono">03</span>
           <h2 id="contact-heading">Lets work together!</h2>
           <p className="contact-lead">
             Shoot me an email or connect with me on LinkedIn if anything piqued your interest.
