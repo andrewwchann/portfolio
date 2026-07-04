@@ -819,10 +819,20 @@ a:hover {
 }
 
 .projects-grid {
+  --project-grid-gap: clamp(1.5rem, 3vw, 2.75rem);
+
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(1.5rem, 3vw, 2.75rem);
+  gap: var(--project-grid-gap);
   overflow: visible;
+}
+
+@media (min-width: 769px) {
+  .projects-grid > .project-card-wrap:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc((100% - var(--project-grid-gap)) / 2);
+  }
 }
 
 .project-card-wrap {
