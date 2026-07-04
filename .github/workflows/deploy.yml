@@ -29,6 +29,9 @@ jobs:
           # Project site lives at /portfolio/. Override with a repo variable if needed;
           # use / only for a username.github.io repo.
           VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH || '/portfolio/' }}
+      # SPA fallback: GitHub Pages has no server routing, so serve the app for
+      # deep links like /about by duplicating index.html as 404.html.
+      - run: cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

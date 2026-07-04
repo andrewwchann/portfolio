@@ -66,6 +66,12 @@ export type Project = {
   github: string;
   demo?: string;
   tags: string[];
+  /** Cover image shown on the project tile (path under /public) */
+  image?: string;
+  /** Optional visual treatment for the tile preview */
+  tileFrame?: "phone";
+  /** Short date range shown on the tile, e.g. "Apr – Jun 2026" */
+  dates?: string;
   /** Pixel art or illustration that peeks from behind the card on hover */
   hoverArt?: string;
   detail?: ProjectDetail;

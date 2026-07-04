@@ -1,10 +1,10 @@
 import { useEffect, useState, type MouseEvent } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { asset } from "../utils/asset";
 
-const NAV = [
-  { href: "#about", label: "About" },
-  { href: "#experience", label: "Experience" },
-  { href: "#projects", label: "Projects" },
+const SECTIONS = [
+  { id: "projects", label: "Projects" },
+  { id: "experience", label: "Experience" },
 ];
 
 const SIGNATURE_GIF = asset("/signature.gif");
@@ -14,6 +14,9 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("");
   const [signaturePlayId, setSignaturePlayId] = useState(() => Date.now());
+  const location = useLocation();
+  const navigate = useNavigate();
+  const onHome = location.pathname === "/";
 
   useEffect(() => {
     const onScroll = () => {
@@ -33,21 +36,41 @@ export default function Header() {
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [location.pathname]);
 
   const closeMenu = () => setMenuOpen(false);
 
-  const scrollToTop = (e: MouseEvent<HTMLAnchorElement>) => {
+  const scrollToId = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const goToSection =
+    (id: string) => (e: MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault();
+      closeMenu();
+      if (onHome) {
+        scrollToId(id);
+      } else {
+        navigate(`/#${id}`);
+      }
+    };
+
+  const goHome = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    window.scrollTo({ top: 0, behavior: "smooth" });
     closeMenu();
     setSignaturePlayId(Date.now());
+    if (onHome) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      navigate("/");
+    }
   };
 
   return (
     <header className={`site-header${scrolled ? " scrolled" : ""}`}>
       <nav className="nav container" aria-label="Main">
-        <a className="logo" href="#top" aria-label="Home" onClick={scrollToTop}>
+        <a className="logo" href="/" aria-label="Home" onClick={goHome}>
           <img
             key={signaturePlayId}
             className="logo-signature"
@@ -70,19 +93,28 @@ export default function Header() {
           <span />
         </button>
         <ul className={`nav-links${menuOpen ? " open" : ""}`} id="nav-menu">
-          {NAV.map(({ href, label }) => (
-            <li key={href}>
+          <li>
+            <Link
+              to="/about"
+              className={location.pathname === "/about" ? "active" : undefined}
+              onClick={closeMenu}
+            >
+              About
+            </Link>
+          </li>
+          {SECTIONS.map(({ id, label }) => (
+            <li key={id}>
               <a
-                href={href}
-                className={active === href.slice(1) ? "active" : undefined}
-                onClick={closeMenu}
+                href={`/#${id}`}
+                className={onHome && active === id ? "active" : undefined}
+                onClick={goToSection(id)}
               >
                 {label}
               </a>
             </li>
           ))}
           <li>
-            <a className="nav-cta" href="#contact" onClick={closeMenu}>
+            <a className="nav-cta" href="/#contact" onClick={goToSection("contact")}>
               Say Hi!
             </a>
           </li>
