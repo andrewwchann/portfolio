@@ -1,4 +1,5 @@
 import type { ContentBlock } from "../data/types";
+import { asset } from "../utils/asset";
 
 type ContentBlocksProps = {
   blocks: ContentBlock[];
@@ -17,6 +18,8 @@ export default function ContentBlocks({
   blocks,
   className = "content-blocks",
 }: ContentBlocksProps) {
+  const resolveHref = (href: string) => (href.startsWith("/#") ? asset(href) : href);
+
   return (
     <div className={className}>
       {blocks.map((block, index) => {
@@ -30,7 +33,7 @@ export default function ContentBlocks({
               typeof part === "string" ? (
                 part
               ) : (
-                <a key={`${partIndex}-${part.href}`} href={part.href}>
+                <a key={`${partIndex}-${part.href}`} href={resolveHref(part.href)}>
                   {part.text}
                 </a>
               ),

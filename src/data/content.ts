@@ -26,7 +26,7 @@ export const site = {
     {
       parts: [
         "As of lately, I've been enjoying the process of learning robotics through building ",
-        { text: "Cyberus", href: "#projects" },
+        { text: "Cyberus", href: "/#projects" },
         ".",
       ],
     },
