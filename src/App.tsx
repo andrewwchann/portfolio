@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -14,6 +14,10 @@ import About from "./sections/About";
 import Experience from "./sections/Experience";
 import Projects from "./sections/Projects";
 import Contact from "./sections/Contact";
+
+// Project detail pages (write-ups, diagrams, demo video) are code-split so
+// their media-heavy layout only loads when a visitor opens a project.
+const ProjectPage = lazy(() => import("./sections/ProjectPage"));
 
 const basename = import.meta.env.BASE_URL.replace(/\/$/, "") || "/";
 
@@ -66,10 +70,13 @@ export default function App() {
           </a>
           <Header />
           <ScrollManager />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<AboutPage />} />
-          </Routes>
+          <Suspense fallback={<div className="route-fallback" aria-hidden />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/projects/:slug" element={<ProjectPage />} />
+            </Routes>
+          </Suspense>
           <Footer />
         </div>
       </CopyToastProvider>

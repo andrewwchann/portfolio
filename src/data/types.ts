@@ -61,6 +61,8 @@ export type ProjectDetail = {
 
 export type Project = {
   id: string;
+  /** URL-friendly identifier used for the project's dedicated page, e.g. "cyberus" → /projects/cyberus */
+  slug?: string;
   title: string;
   description: string;
   github: string;

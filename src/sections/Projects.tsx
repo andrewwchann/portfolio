@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import { useReveal } from "../hooks/useReveal";
+import { useIsScrolling } from "../hooks/useIsScrolling";
 import { site } from "../data/content";
 import type { Project } from "../data/types";
-import ProjectModal from "../components/ProjectModal";
 import { GitHubIcon, ExternalLinkIcon } from "../components/icons";
 import { asset } from "../utils/asset";
 
@@ -10,7 +11,6 @@ export default function Projects() {
   const headerRef = useReveal<HTMLElement>();
   const gridRef = useRef<HTMLDivElement>(null);
   const [gridInView, setGridInView] = useState(false);
-  const [selected, setSelected] = useState<Project | null>(null);
 
   useEffect(() => {
     const el = gridRef.current;
@@ -40,48 +40,79 @@ export default function Projects() {
           className={`projects-grid${gridInView ? " projects-grid--float" : ""}`}
         >
           {site.projects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              onOpen={() => setSelected(project)}
-            />
+            <ProjectCard key={project.id} project={project} />
           ))}
         </div>
       </div>
-
-      <ProjectModal project={selected} onClose={() => setSelected(null)} />
     </section>
   );
 }
 
-function ProjectCard({
-  project,
-  onOpen,
-}: {
-  project: Project;
-  onOpen: () => void;
-}) {
+function ProjectCard({ project }: { project: Project }) {
+  const navigate = useNavigate();
+  const href = `/projects/${project.slug ?? project.id}`;
+  const openDetail = () => navigate(href);
   const ref = useReveal<HTMLElement>();
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const isVideoAsset = /\.(mp4|webm|ogg)$/i.test(project.image ?? "");
   const usePhoneFrame = project.tileFrame === "phone";
+  const scrolling = useIsScrolling();
+  const [inView, setInView] = useState(false);
+
+  // Track whether this tile's video is on screen. Playback itself is driven by
+  // the effect below so it can also react to scroll state.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.2 },
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, [project.image]);
+
+  // Only play previews when they're visible AND the page isn't actively being
+  // scrolled. Pausing video decode/compositing during scroll keeps desktop
+  // scrolling smooth; previews resume the moment the user settles.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const connection = (
+      navigator as Navigator & { connection?: { saveData?: boolean } }
+    ).connection;
+    const saveData = Boolean(connection?.saveData);
+
+    if (inView && !scrolling && !reduceMotion && !saveData) {
+      void video.play().catch(() => {
+        // Ignore autoplay blocking; the tile still works as a static preview.
+      });
+    } else {
+      video.pause();
+    }
+  }, [inView, scrolling, project.image]);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      onOpen();
+      openDetail();
     }
   };
 
   const media = project.image ? (
     isVideoAsset ? (
       <video
+        ref={videoRef}
         className="project-card__image"
         src={asset(project.image)}
-        autoPlay
         loop
         muted
         playsInline
-        preload="metadata"
+        preload="none"
         aria-hidden
       />
     ) : (
@@ -118,11 +149,11 @@ function ProjectCard({
           usePhoneFrame ? " project-card--phone" : ""
         }`}
         ref={ref}
-        role="button"
+        role="link"
         tabIndex={0}
-        onClick={onOpen}
+        onClick={openDetail}
         onKeyDown={handleKeyDown}
-        aria-label={`Open details for ${project.title}`}
+        aria-label={`View ${project.title} project details`}
       >
         {project.image ? (
           <div

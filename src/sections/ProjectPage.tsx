@@ -1,14 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { createPortal } from "react-dom";
+import { site } from "../data/content";
 import type { Project } from "../data/types";
-import ContentBlocks from "./ContentBlocks";
-import { GitHubIcon, ExternalLinkIcon } from "./icons";
+import ContentBlocks from "../components/ContentBlocks";
+import { GitHubIcon, ExternalLinkIcon } from "../components/icons";
 import { asset } from "../utils/asset";
-
-type ProjectModalProps = {
-  project: Project | null;
-  onClose: () => void;
-};
 
 type ExpandedDiagram = {
   src: string;
@@ -67,7 +64,7 @@ function DiagramFigure({
         onClick={() => onExpand({ src, alt, caption })}
         aria-label={`View ${alt} full size`}
       >
-        <img src={src} alt={alt} />
+        <img src={src} alt={alt} loading="lazy" decoding="async" />
         <span className="project-modal__figure-hint mono" aria-hidden>
           Full size
         </span>
@@ -77,48 +74,37 @@ function DiagramFigure({
   );
 }
 
-export default function ProjectModal({ project, onClose }: ProjectModalProps) {
-  const closeRef = useRef<HTMLButtonElement>(null);
-  const expandedDiagramRef = useRef<ExpandedDiagram | null>(null);
+export default function ProjectPage() {
+  const { slug } = useParams<{ slug: string }>();
+  const project = (site.projects as Project[]).find(
+    (p) => p.slug === slug || p.id === slug,
+  );
+
   const [expandedDiagram, setExpandedDiagram] = useState<ExpandedDiagram | null>(
     null,
   );
 
-  expandedDiagramRef.current = expandedDiagram;
-
+  // Close the lightbox with Escape and lock scroll while it's open.
   useEffect(() => {
-    setExpandedDiagram(null);
-  }, [project]);
-
-  useEffect(() => {
-    if (!project) return;
-    closeRef.current?.focus();
-  }, [project]);
-
-  useEffect(() => {
-    if (!project) return;
+    if (!expandedDiagram) return;
 
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key !== "Escape") return;
-      if (expandedDiagramRef.current) {
-        setExpandedDiagram(null);
-      } else {
-        onClose();
-      }
+      if (e.key === "Escape") setExpandedDiagram(null);
     };
-
     window.addEventListener("keydown", onKeyDown);
 
     return () => {
       document.body.style.overflow = prevOverflow;
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [project, onClose]);
+  }, [expandedDiagram]);
 
-  if (!project) return null;
+  if (!project) {
+    return <Navigate to="/#projects" replace />;
+  }
 
   const detail = project.detail;
   const overview = detail?.overview ?? [];
@@ -133,42 +119,22 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
     videoUrl?.endsWith(".webm");
 
   return (
-    <>
-    <div
-      className="project-modal"
-      role="presentation"
-      onClick={() => {
-        if (!expandedDiagram) onClose();
-      }}
-    >
-      <div
-        className="project-modal__dialog"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="project-modal-title"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <header className="project-modal__header">
-          <div>
-            <p className="project-modal__label mono">Project</p>
-            <h2 id="project-modal-title" className="project-modal__title">
-              {project.title}
-            </h2>
-            <ul className="project-tags project-modal__tags">
-              {project.tags.map((tag) => (
-                <li key={tag}>{tag}</li>
-              ))}
-            </ul>
-          </div>
-          <button
-            ref={closeRef}
-            type="button"
-            className="project-modal__close"
-            onClick={onClose}
-            aria-label="Close project details"
-          >
-            ×
-          </button>
+    <main id="main" className="subpage subpage--reveal">
+      <div className="container project-page">
+        <Link to="/#projects" className="project-page__back">
+          <span aria-hidden>←</span>
+          <span>All projects</span>
+        </Link>
+
+        <div className="project-page__panel">
+        <header className="project-page__header">
+          <p className="project-modal__label mono">Project</p>
+          <h1 className="project-page__title">{project.title}</h1>
+          <ul className="project-tags project-modal__tags">
+            {project.tags.map((tag) => (
+              <li key={tag}>{tag}</li>
+            ))}
+          </ul>
         </header>
 
         <div className="project-modal__actions">
@@ -196,7 +162,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
 
         <div className="project-modal__body">
           <section className="project-modal__section">
-            <h3 className="project-modal__section-title">Overview</h3>
+            <h2 className="project-modal__section-title">Overview</h2>
             {overview.length > 0 ? (
               <ContentBlocks
                 blocks={overview}
@@ -218,7 +184,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           </section>
 
           <section className="project-modal__section">
-            <h3 className="project-modal__section-title">Demo</h3>
+            <h2 className="project-modal__section-title">Demo</h2>
             {videoUrl && embedUrl ? (
               <div className="project-modal__video-wrap">
                 <iframe
@@ -230,7 +196,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               </div>
             ) : videoUrl && isLocalVideo ? (
               <div className="project-modal__video-wrap">
-                <video controls playsInline preload="metadata" src={asset(videoUrl)}>
+                <video controls playsInline preload="none" src={asset(videoUrl)}>
                   <track kind="captions" />
                 </video>
               </div>
@@ -241,7 +207,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
 
           <div className="project-modal__diagrams">
             <section className="project-modal__section">
-              <h3 className="project-modal__section-title">Architecture</h3>
+              <h2 className="project-modal__section-title">Architecture</h2>
               {architectureSrc ? (
                 <DiagramFigure
                   src={asset(architectureSrc)}
@@ -259,7 +225,9 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
 
             {flowSrc ? (
               <section className="project-modal__section">
-                <h3 className="project-modal__section-title">Design Decision Matrices</h3>
+                <h2 className="project-modal__section-title">
+                  Design Decision Matrices
+                </h2>
                 <DiagramFigure
                   src={asset(flowSrc)}
                   alt={detail?.flowCaption ?? `${project.title} flow diagram`}
@@ -271,7 +239,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
 
             {(detail?.images ?? []).map((image) => (
               <section className="project-modal__section" key={image.src}>
-                <h3 className="project-modal__section-title">{image.label}</h3>
+                <h2 className="project-modal__section-title">{image.label}</h2>
                 <DiagramFigure
                   src={asset(image.src)}
                   alt={image.caption ?? `${project.title} ${image.label}`}
@@ -282,39 +250,39 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             ))}
           </div>
         </div>
+        </div>
       </div>
-    </div>
 
-    {expandedDiagram
-      ? createPortal(
-          <div
-            className="project-modal__lightbox"
-            role="dialog"
-            aria-modal="true"
-            aria-label={expandedDiagram.alt}
-            onClick={() => setExpandedDiagram(null)}
-          >
-            <button
-              type="button"
-              className="project-modal__lightbox-close"
+      {expandedDiagram
+        ? createPortal(
+            <div
+              className="project-modal__lightbox"
+              role="dialog"
+              aria-modal="true"
+              aria-label={expandedDiagram.alt}
               onClick={() => setExpandedDiagram(null)}
-              aria-label="Close expanded diagram"
             >
-              ×
-            </button>
-            <figure
-              className="project-modal__lightbox-figure"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <img src={expandedDiagram.src} alt={expandedDiagram.alt} />
-              {expandedDiagram.caption ? (
-                <figcaption>{expandedDiagram.caption}</figcaption>
-              ) : null}
-            </figure>
-          </div>,
-          document.body,
-        )
-      : null}
-    </>
+              <button
+                type="button"
+                className="project-modal__lightbox-close"
+                onClick={() => setExpandedDiagram(null)}
+                aria-label="Close expanded diagram"
+              >
+                ×
+              </button>
+              <figure
+                className="project-modal__lightbox-figure"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img src={expandedDiagram.src} alt={expandedDiagram.alt} />
+                {expandedDiagram.caption ? (
+                  <figcaption>{expandedDiagram.caption}</figcaption>
+                ) : null}
+              </figure>
+            </div>,
+            document.body,
+          )
+        : null}
+    </main>
   );
 }

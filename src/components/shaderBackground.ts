@@ -7,14 +7,19 @@ import {
   ShaderMount,
 } from "@paper-design/shaders";
 
-const DESKTOP_MAX_PIXELS = 1280 * 720;
-const MOBILE_MAX_PIXELS = 854 * 480;
+const DESKTOP_MAX_PIXELS = 960 * 540;
+const MOBILE_MAX_PIXELS = 560 * 315;
+const LOW_POWER_MAX_PIXELS = 426 * 240;
 
 const COLORS = ["#fdfd96", "#ffffd1", "#ffffff"];
 const COLOR_BACK = "#fdfd96";
 
-export function getMaxPixelCount() {
-  if (window.matchMedia("(max-width: 768px)").matches) {
+export function getMaxPixelCount(options?: { isMobile?: boolean; lowPower?: boolean }) {
+  if (options?.lowPower) {
+    return LOW_POWER_MAX_PIXELS;
+  }
+
+  if (options?.isMobile ?? window.matchMedia("(max-width: 768px)").matches) {
     return MOBILE_MAX_PIXELS;
   }
   return DESKTOP_MAX_PIXELS;

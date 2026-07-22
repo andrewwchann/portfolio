@@ -79,6 +79,7 @@ export const site = {
   projects: [
     {
       id: "proj-1",
+      slug: "cyberus",
       title: "Cyberus Robotic Dog",
       description: "Designed and built the software for a robotic dog from hardware to software.",
       github: "https://github.com/andrewwchann/cyberus-controls",
@@ -91,7 +92,7 @@ export const site = {
         overview: [
           "Cyberus is a robotic dog where I developed the software stack controlling its hardware components, implementing a Master-Slave architecture for communication between a local client and a Jetson Orin Nano",
           "The goal of the project was to evaluate the quality of an onboard stereo camera by having the dog walk while recording temperature, IMU, and leg gait data. We then ran camera calibration and MTF experiments to assess image fidelity.",
-          "From the test results we found that the entry level cameras are ",
+          "From the test results we found that the entry level cameras were performing as intended (not amazing, not terrible), with the resolution and field of view being sufficient for the application.",
           "I was responsible for the following:",
         ],
         highlights: [
@@ -111,6 +112,7 @@ export const site = {
     },
     {
       id: "proj-2",
+      slug: "alpr",
       title: "Automated License Plate Recognition System",
       description:
         "An offline-first system that recognizes license plates using OCR and on-device ML.",
@@ -138,12 +140,13 @@ export const site = {
     },
     {
       id: "proj-3",
+      slug: "poker",
       title: "Rust Poker Server",
       description:
         "A multiplayer poker server in Rust with Texas Hold'em, 5-Card Draw, and 7-Card Stud.",
       github: "https://github.com/andrewwchann/rust-poker-server",
       dates: "Mar 2025",
-      image: "/projects/poker/poker-summary.gif",
+      image: "/projects/poker/poker-summary.mp4",
       // demo: "https://your-demo-link.com",
       tags: ["Rust", "Multiplayer", "WebSockets", "Tokio"],
       detail: {

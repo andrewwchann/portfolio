@@ -18,25 +18,62 @@ export default function Header() {
   const navigate = useNavigate();
   const onHome = location.pathname === "/";
 
+  // Toggle the header shadow. rAF-throttled and only reads scrollY (no layout
+  // reads), so it never forces a reflow while scrolling.
   useEffect(() => {
-    const onScroll = () => {
+    let ticking = false;
+    const update = () => {
+      ticking = false;
       setScrolled(window.scrollY > 20);
-
-      const scrollY = window.scrollY + 120;
-      let current = "";
-      document.querySelectorAll("section[id]").forEach((section) => {
-        const el = section as HTMLElement;
-        if (scrollY >= el.offsetTop && scrollY < el.offsetTop + el.offsetHeight) {
-          current = el.id;
-        }
-      });
-      setActive(current);
     };
-
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
+    update();
     return () => window.removeEventListener("scroll", onScroll);
-  }, [location.pathname]);
+  }, []);
+
+  // Active-section highlight via IntersectionObserver instead of measuring
+  // element offsets on every scroll event.
+  useEffect(() => {
+    if (!onHome) {
+      setActive("");
+      return;
+    }
+
+    const sections = Array.from(
+      document.querySelectorAll<HTMLElement>("section[id]"),
+    );
+    if (sections.length === 0) return;
+
+    const ratios = new Map<string, number>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          ratios.set((entry.target as HTMLElement).id, entry.intersectionRatio);
+        }
+        let bestId = "";
+        let bestRatio = 0;
+        ratios.forEach((ratio, id) => {
+          if (ratio > bestRatio) {
+            bestRatio = ratio;
+            bestId = id;
+          }
+        });
+        if (bestId) setActive(bestId);
+      },
+      {
+        threshold: [0.15, 0.35, 0.55, 0.75],
+        rootMargin: "-72px 0px -35% 0px",
+      },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [onHome, location.pathname]);
 
   const closeMenu = () => setMenuOpen(false);
 
